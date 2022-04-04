@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
@@ -89,6 +90,9 @@ const Login = () => {
         <div className="invalid-feedback">{errors.password}</div>
       </div>
       <button type="submit" className="btn btn-primary">Submit</button>
+      <div>
+         <Link to="/Register">Don't have an account? Register now!</Link> 
+      </div>
     </form>
 
     </div>

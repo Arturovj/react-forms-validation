@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 const MIN_AGE = 18;
+const PASSWORD_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/ ;
 
 const Register = () => {
-  const [contact, setContact] = useState({ name: "", email: "", age: null })
-  const [errors, setErrors] = useState({ name: false, email: false, age: false })
+  const [contact, setContact] = useState({ name: "", email: "", age: null, password: "" })
+  const [errors, setErrors] = useState({ name: false, email: false, age: false, password: false})
   const [touch, setTouch] = useState({})
 
   const validations = {
@@ -21,6 +22,12 @@ const Register = () => {
       let message;
       if (!value) message = "Email is required"
       else if (!EMAIL_PATTERN.test(value))  message = "Enter a valid email format"
+      return message
+    },
+    password: (value) => {
+      let message;
+      if(!value) message = "password is required"
+      else if (!PASSWORD_PATTERN.test(value)) message = "Minimum eight characters, at least one letter, one number and one special character:"
       return message
     },
     age: (value) => {
@@ -55,7 +62,7 @@ const Register = () => {
     e.preventDefault()
 
     if (!hasErrors()) {
-      setTouch({ email: true, name: true, age: true })
+      setTouch({ email: true, name: true, age: true, password: true })
       ContactsService.create(contact)
         .then(contact => console.log(contact))
         .catch(error => {
@@ -88,6 +95,17 @@ const Register = () => {
           onBlur={handleBLur}
         />
         <div className="invalid-feedback">{errors.email}</div>
+      </div>
+      <div className="mb-3 text-start">
+        <label className="form-label">Password</label>
+        <input
+          name="password"
+          type="password"
+          className={`form-control ${touch.password && errors.password && "is-invalid"}`}
+          onChange={handleChange}
+          onBlur={handleBLur}
+        />
+        <div className="invalid-feedback">{errors.password}</div>
       </div>
       <div className="mb-3 text-start">
         <label className="form-label">Age</label>
